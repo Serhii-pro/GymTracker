@@ -15,7 +15,17 @@
 <header>
   <div class="header-inner">
     <div class="logo">
-      <div class="logo-icon">💪</div>
+      <div class="logo-icon">
+        <!-- Dumbbell SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+             fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2"  y="10" width="4" height="4" rx="1"/>
+          <rect x="18" y="10" width="4" height="4" rx="1"/>
+          <rect x="5"  y="8"  width="3" height="8" rx="1"/>
+          <rect x="16" y="8"  width="3" height="8" rx="1"/>
+          <line x1="8" y1="12" x2="16" y2="12" stroke-width="2.5"/>
+        </svg>
+      </div>
       GYM <span>Tracker</span>
     </div>
     <div class="header-actions">
@@ -35,14 +45,43 @@
 
 <!-- ── Main ────────────────────────────────────────────────── -->
 <main>
-  <div class="week-header">
-    <div>
-      <div class="week-title">Weekly <span>Schedule</span></div>
-      <div style="font-size:.82rem; color:var(--muted); margin-top:4px;">
-        Intermediate–Advanced · Foundation Block
+  <!-- ── Week Navigation ──────────────────────────────────── -->
+  <div class="week-nav">
+    <button class="btn-week-nav" onclick="prevWeek()" title="Previous week (←)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+
+    <div class="week-nav-center">
+      <div class="week-nav-top">
+        <span id="week-label" class="week-label-text">Week —</span>
+        <span id="week-context" class="week-context-badge badge-current">Current Week</span>
       </div>
+      <div id="week-date-range" class="week-date-range">Loading…</div>
     </div>
+
+    <button class="btn-week-nav" onclick="nextWeek()" title="Next week (→)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+
+    <button class="btn btn-ghost btn-sm" id="btn-today" onclick="goToCurrentWeek()">
+      Today
+    </button>
   </div>
+
+  <!-- ── Stats Bar ─────────────────────────────────────────── -->
+  <div class="week-stats" id="week-stats">
+    <div class="stats-empty">No exercises logged for this week yet — add some! 💪</div>
+  </div>
+
+  <!-- ── Day Cards ─────────────────────────────────────────── -->
   <div class="days-grid" id="days-grid">
     <!-- Populated by render.js → renderAll() -->
   </div>
@@ -96,11 +135,12 @@
 </div>
 
 <!-- ── Scripts (order matters) ──────────────────────────────── -->
-<script src="js/data.js"></script>    <!-- 1. EXERCISE_DB, DAYS              -->
-<script src="js/state.js"></script>   <!-- 2. state, loadState, saveState    -->
-<script src="js/render.js"></script>  <!-- 3. renderAll, rerenderCard, CRUD  -->
-<script src="js/modal.js"></script>   <!-- 4. openModal, addExercise, …      -->
-<script src="js/app.js"></script>     <!-- 5. init + keyboard shortcuts       -->
+<script src="js/data.js"></script>    <!-- 1. EXERCISE_DB, DAYS                        -->
+<script src="js/state.js"></script>   <!-- 2. state, loadState, saveState, resetState  -->
+<script src="js/render.js"></script>  <!-- 3. renderAll, rerenderCard, CRUD helpers    -->
+<script src="js/modal.js"></script>   <!-- 4. openModal, addExercise, …               -->
+<script src="js/week.js"></script>    <!-- 5. week nav, stats, TODAY_WEEK_KEY          -->
+<script src="js/app.js"></script>     <!-- 6. init + keyboard shortcuts (runs last)    -->
 
 </body>
 </html>

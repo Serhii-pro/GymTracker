@@ -107,7 +107,8 @@ function handleConfirmOverlay(e) {
 
 /** Called when the user clicks "Yes, Reset" in the confirm dialog. */
 function confirmReset() {
-  resetState();   // wipes localStorage + re-initialises state (state.js)
+  resetState();                                           // wipe + re-init state
   closeConfirm();
-  renderAll();    // re-draw all cards (render.js)
+  renderAll();                                            // re-draw all cards
+  if (typeof updateWeekUI === 'function') updateWeekUI(); // refresh nav + stats
 }
