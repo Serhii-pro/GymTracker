@@ -504,30 +504,47 @@ footer a { color: var(--neon); text-decoration: none; }
 .dot.filled { background: var(--neon); box-shadow: 0 0 6px var(--neon); }
 
 /* ════════════════════════════════════════════════════════════
-   WEEK NAVIGATION
-   ════════════════════════════════════════════════════════════ */
+   WEEK NAVIGATION BAR
+   ════════════════════════════════════════════════════════════
+
+   Layout (one strict horizontal row, never wraps on desktop):
+   ┌─────────────────────────────────────────────────────────┐
+   │  [‹]   Week 40 · CURRENT WEEK   ·  Sep 29–Oct 5   [›]  │  [Today]
+   └─────────────────────────────────────────────────────────┘
+*/
 
 .week-nav {
+  /* One horizontal row, vertically centred, never wraps */
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 10px;
+  flex-wrap: nowrap;
+  gap: 12px;
+
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px 18px;
+  padding: 12px 16px;
   margin-bottom: 14px;
   box-shadow: var(--shadow);
+  min-height: 60px;
 }
 
-/* Prev / Next arrow buttons */
+/* ── Arrow buttons ‹ › ───────────────────────────────── */
 .btn-week-nav {
-  width: 36px; height: 36px;
-  border-radius: var(--radius-sm);
+  /* Explicit flex item – fixed square, never shrinks */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+
   background: var(--card2);
   border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   color: var(--text);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0;
+  cursor: pointer;
   transition: border-color .15s, color .15s, box-shadow .15s, transform .1s;
 }
 .btn-week-nav:hover {
@@ -536,41 +553,60 @@ footer a { color: var(--neon); text-decoration: none; }
   box-shadow: var(--glow);
 }
 .btn-week-nav:active { transform: scale(.92); }
+.btn-week-nav svg { display: block; flex-shrink: 0; }
 
-/* Center info block */
+/* ── Center block (week label + badge + date) ────────── */
 .week-nav-center {
-  flex: 1;
-  text-align: center;
-  min-width: 0;
-}
-.week-nav-top {
+  /* Takes all remaining space, content centred */
+  flex: 1 1 auto;
+  min-width: 0;          /* allow shrink without overflow */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-bottom: 3px;
-  flex-wrap: wrap;
+  gap: 3px;
+  text-align: center;
 }
+
+/* Top row: bold week number + coloured badge — always one line */
+.week-nav-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  white-space: nowrap;
+}
+
 .week-label-text {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 800;
   letter-spacing: -.3px;
+  white-space: nowrap;
 }
+
+/* Date range row — always one line */
 .week-date-range {
-  font-size: .78rem;
+  font-size: .76rem;
   color: var(--muted);
+  white-space: nowrap;
   letter-spacing: .01em;
 }
 
-/* Context badges */
+/* ── Context badges (Current Week / Last Week / …) ───── */
 .week-context-badge {
-  font-size: .65rem;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: .62rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .08em;
   padding: 2px 8px;
   border-radius: 20px;
-  white-space: nowrap;
+  line-height: 1.6;
+  flex-shrink: 0;
 }
 .badge-current {
   background: rgba(57,255,20,.12);
@@ -588,83 +624,113 @@ footer a { color: var(--neon); text-decoration: none; }
   border: 1px solid rgba(255,107,0,.25);
 }
 
+/* ── Today button – pinned to the right ──────────────── */
+/* Override .btn defaults that could cause layout issues */
+#btn-today {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 /* ════════════════════════════════════════════════════════════
    STATS BAR
-   ════════════════════════════════════════════════════════════ */
+   ════════════════════════════════════════════════════════════
+
+   Layout:
+   ┌───────────┬───────────┬───────────┬───────────┬──────────┐
+   │ Exercises │ Planned   │ Logged    │ Days      │  75%     │
+   │    8      │   32      │  24/32    │   3/4     │ ▓▓▓▓░░   │
+   └───────────┴───────────┴───────────┴───────────┴──────────┘
+*/
 
 .week-stats {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0;
+
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 18px 20px;
+  padding: 16px 20px;
   margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 0;
-  min-height: 80px;
+  min-height: 76px;
   box-shadow: var(--shadow);
-  transition: opacity .25s;
 }
 
+/* Empty-state message */
 .stats-empty {
-  width: 100%;
+  flex: 1;
   text-align: center;
   color: var(--muted);
   font-size: .85rem;
   font-style: italic;
 }
 
+/* Each stat column */
 .stat-item {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 0 6px;
+  padding: 0 8px;
 }
-.stat-item--progress { flex: 1.5; }
+.stat-item--progress { flex: 1.4 1 0; }
 
+/* The big number */
 .stat-value {
-  font-size: 1.55rem;
+  font-size: 1.45rem;
   font-weight: 800;
   line-height: 1;
   margin-bottom: 4px;
   letter-spacing: -.5px;
+  white-space: nowrap;
   transition: color .3s;
 }
+
+/* Fraction suffix  "/32" */
 .stat-of {
-  font-size: .75rem;
+  font-size: .72rem;
   font-weight: 600;
   color: var(--muted);
-  margin-left: 1px;
 }
+
+/* "%" suffix */
 .stat-unit {
-  font-size: .8rem;
+  font-size: .78rem;
   font-weight: 600;
   color: var(--muted);
 }
+
+/* Label underneath the number */
 .stat-label {
-  font-size: .68rem;
+  font-size: .65rem;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: .07em;
   font-weight: 600;
+  white-space: nowrap;
 }
 
+/* Thin vertical divider between columns */
 .stat-divider {
   width: 1px;
-  height: 44px;
+  height: 40px;
   background: var(--border);
   flex-shrink: 0;
 }
 
-/* Progress bar inside stat */
+/* Mini progress bar (completion column) */
 .stat-progress-bar {
+  width: 68px;
   height: 4px;
   background: var(--border);
   border-radius: 2px;
-  margin-top: 7px;
+  margin-top: 6px;
   overflow: hidden;
-  max-width: 72px;
-  margin-left: auto;
-  margin-right: auto;
 }
 .stat-progress-fill {
   height: 100%;
@@ -672,13 +738,28 @@ footer a { color: var(--neon); text-decoration: none; }
   transition: width .5s cubic-bezier(.22,1,.36,1), background .3s;
 }
 
-/* ── Responsive tweaks ───────────────────────────────── */
-@media (max-width: 560px) {
-  .week-nav        { flex-wrap: wrap; justify-content: center; gap: 8px; }
-  .week-nav-center { order: -1; width: 100%; }
-  .stat-value      { font-size: 1.2rem; }
-  .week-stats      { flex-wrap: wrap; gap: 14px; justify-content: center; }
-  .stat-divider    { display: none; }
-  .stat-item       { min-width: 60px; }
-}
+/* ── Responsive: collapse to 2-column grid on narrow screens ── */
+@media (max-width: 680px) {
+  /* Week nav: keep arrows + today on one row, center block full-width above */
+  .week-nav {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .week-nav-center {
+    order: -1;          /* move center block to the top */
+    width: 100%;
+    flex: 0 0 100%;
+  }
 
+  /* Stats: 2×2 grid + completion below */
+  .week-stats {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px;
+  }
+  .stat-item       { flex: 0 0 calc(50% - 1px); min-width: 100px; }
+  .stat-item--progress { flex: 0 0 100%; border-top: 1px solid var(--border); padding-top: 10px; }
+  .stat-divider    { display: none; }
+  .stat-value      { font-size: 1.2rem; }
+}
