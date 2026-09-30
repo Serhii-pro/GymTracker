@@ -1,0 +1,47 @@
+/**
+ * data.js
+ * ─────────────────────────────────────────────────────────────
+ * Static data: exercise database + weekly day definitions.
+ * Edit this file to add/remove exercises or change active days.
+ */
+
+// ── Exercise Database ─────────────────────────────────────────
+const EXERCISE_DB = [
+  { name: '45° Incline Barbell Press',              videoUrl: 'https://youtu.be/vqQ9ok0dEgk'                   },
+  { name: '45° Incline DB Press',                   videoUrl: 'https://www.youtube.com/watch?v=p2t9daxLpB8'    },
+  { name: 'Cable Crossover Ladder',                 videoUrl: 'https://youtu.be/0TP9kVcWGic'                   },
+  { name: 'Wide-Grip Pull-Up',                      videoUrl: 'https://youtu.be/yGnp0HU8BnA'                   },
+  { name: 'Neutral-Grip Lat Pulldown',              videoUrl: 'https://youtu.be/lA4_1F9EAFU'                   },
+  { name: 'High-Cable Lateral Raise',               videoUrl: 'https://youtu.be/MnMux3Wc0Ac'                   },
+  { name: 'Pendlay Deficit Row',                    videoUrl: 'https://youtu.be/MmuyHKYCLps'                   },
+  { name: 'Chest-Supported Machine Row',            videoUrl: 'https://youtu.be/ijsSiWSzYw0'                   },
+  { name: 'Overhead Cable Triceps Extension (Rope)',videoUrl: 'https://youtu.be/GYoUoVNlbGc'                   },
+  { name: 'DB Skull Crusher',                       videoUrl: 'https://youtu.be/fbLTzgTKOR8'                   },
+  { name: 'Bayesian Cable Curl',                    videoUrl: 'https://youtu.be/CWH5J_7kzjM'                   },
+  { name: 'Dumbbell Hammer Curl',                   videoUrl: 'https://youtu.be/xY3sQXYhk7A'                   },
+  { name: 'Dumbbell Preacher Curl',                 videoUrl: 'https://youtu.be/WTkQLAethtg'                   },
+  { name: 'Lying Leg Curl',                         videoUrl: 'https://youtu.be/sX4tGtcc62k'                   },
+  { name: 'DB Bulgarian Split Squat',               videoUrl: 'https://youtu.be/htDXu61MPio'                   },
+  { name: 'Leg Press',                              videoUrl: 'https://youtu.be/1yKAQLVV_XI'                   },
+  { name: 'Barbell RDL',                            videoUrl: 'https://youtu.be/3fJwfg51cv0'                   },
+  { name: 'Leg Extension',                          videoUrl: 'https://youtu.be/uFbNtqP966A'                   },
+  { name: 'Standing Calf Raise',                    videoUrl: 'https://youtu.be/6lR2JdxUh7w'                   },
+  { name: 'Cable Crunch',                           videoUrl: 'https://youtu.be/epBrpaGHMcg'                   },
+  { name: 'Machine Hip Adduction',                  videoUrl: 'https://youtu.be/FMSCZYu1JhE'                   },
+  { name: 'Machine Hip Abduction',                  videoUrl: 'https://youtu.be/pozooPg6PBE'                   },
+  { name: 'Barbell Bench Press',                    videoUrl: 'https://youtu.be/nQL5ieH39sw'                   },
+  { name: 'Machine Shoulder Press',                 videoUrl: 'https://youtu.be/SCQVmN1gYsk'                   },
+];
+
+// ── Weekly Day Definitions ────────────────────────────────────
+// active: true  → workout day (shows exercise list + Add button)
+// active: false → rest day
+const DAYS = [
+  { key: 'monday',    label: 'Monday',    active: true  },
+  { key: 'tuesday',   label: 'Tuesday',   active: false },
+  { key: 'wednesday', label: 'Wednesday', active: true  },
+  { key: 'thursday',  label: 'Thursday',  active: false },
+  { key: 'friday',    label: 'Friday',    active: true  },
+  { key: 'saturday',  label: 'Saturday',  active: true  },
+  { key: 'sunday',    label: 'Sunday',    active: false },
+];
