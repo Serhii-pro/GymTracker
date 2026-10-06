@@ -7,6 +7,8 @@
   <meta name="description" content="GYM Tracker – Intermediate Advanced Workout PWA" />
   <title>GYM Tracker</title>
   <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="shortcut icon" href="favicon.svg" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -36,6 +38,7 @@
         </svg>
         Saved
       </div>
+      <div id="cloud-indicator" class="cloud-indicator"></div>
       <button class="btn btn-danger btn-sm" onclick="openConfirm()">
         🗑 Reset Week
       </button>
@@ -115,6 +118,57 @@
       </div>
     </div>
     <div class="exercise-db-list" id="exercise-db-list"></div>
+
+    <!-- ── Custom Exercise Footer ─────────────────────────── -->
+    <div class="modal-custom-footer">
+
+      <!-- Toggle button (collapsed by default) -->
+      <button class="btn-custom-toggle" id="btn-custom-toggle"
+              onclick="toggleCustomForm()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Custom Exercise
+      </button>
+
+      <!-- Expandable form (hidden by default) -->
+      <div class="custom-exercise-form" id="custom-exercise-form">
+        <div class="custom-form-fields">
+          <div class="custom-field">
+            <label class="custom-label">Exercise Name</label>
+            <input
+              class="custom-input"
+              id="custom-ex-name"
+              type="text"
+              placeholder="e.g. Cable Face Pull"
+              autocomplete="off"
+              oninput="validateCustomForm()"
+            />
+          </div>
+          <div class="custom-field">
+            <label class="custom-label">Video URL <span class="custom-label-opt">(optional)</span></label>
+            <input
+              class="custom-input"
+              id="custom-ex-url"
+              type="url"
+              placeholder="https://youtu.be/…"
+              autocomplete="off"
+              oninput="validateCustomForm()"
+            />
+          </div>
+        </div>
+        <div class="custom-form-actions">
+          <button class="btn btn-ghost btn-sm" onclick="cancelCustomForm()">Cancel</button>
+          <button class="btn btn-neon btn-sm" id="btn-add-custom"
+                  onclick="submitCustomExercise()" disabled>
+            Add Exercise
+          </button>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -135,12 +189,18 @@
 </div>
 
 <!-- ── Scripts (order matters) ──────────────────────────────── -->
-<script src="js/data.js"></script>    <!-- 1. EXERCISE_DB, DAYS                        -->
-<script src="js/state.js"></script>   <!-- 2. state, loadState, saveState, resetState  -->
-<script src="js/render.js"></script>  <!-- 3. renderAll, rerenderCard, CRUD helpers    -->
-<script src="js/modal.js"></script>   <!-- 4. openModal, addExercise, …               -->
-<script src="js/week.js"></script>    <!-- 5. week nav, stats, TODAY_WEEK_KEY          -->
-<script src="js/app.js"></script>     <!-- 6. init + keyboard shortcuts (runs last)    -->
+<!-- Firebase SDK (compat v9) -->
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+
+<!-- Application Scripts -->
+<script src="js/data.js"></script>     <!-- 1. EXERCISE_DB, CUSTOM_EXERCISES, DAYS -->
+<script src="js/firebase.js"></script> <!-- 2. Firebase Init, _FB_CONFIG, Cloud sync helpers -->
+<script src="js/state.js"></script>    <!-- 3. Offline-first state, loadState, saveState -->
+<script src="js/render.js"></script>   <!-- 4. renderAll, rerenderCard, CRUD helpers -->
+<script src="js/modal.js"></script>    <!-- 5. openModal, addExercise, custom exercises -->
+<script src="js/week.js"></script>     <!-- 6. week nav, stats, prevWeek, nextWeek -->
+<script src="js/app.js"></script>      <!-- 7. Bootstrap (runs last) -->
 
 </body>
 </html>

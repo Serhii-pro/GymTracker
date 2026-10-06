@@ -31,6 +31,8 @@ function openModal(dayKey) {
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   modalDayKey = null;
+  // Always collapse the custom form when the modal is dismissed
+  if (typeof cancelCustomForm === 'function') cancelCustomForm();
 }
 
 /** Close modal when clicking the dark backdrop (not the modal box itself). */
@@ -49,7 +51,10 @@ function renderDbList(query) {
   const q          = query.trim().toLowerCase();
   const alreadyAdded = new Set((state[modalDayKey] || []).map(e => e.name));
 
-  const filtered = EXERCISE_DB.filter(ex =>
+  // Combine built-in and user-added custom exercises
+  const allExercises = [...EXERCISE_DB, ...CUSTOM_EXERCISES];
+
+  const filtered = allExercises.filter(ex =>
     !q || ex.name.toLowerCase().includes(q)
   );
 
@@ -86,6 +91,78 @@ function addExercise(name, videoUrl) {
 
   // Refresh the list so the added item is greyed out
   renderDbList(document.getElementById('modal-search').value);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  Custom Exercise Form (modal footer)
+// ══════════════════════════════════════════════════════════════
+
+let _customFormOpen = false;
+
+/** Toggle the custom exercise form open / closed. */
+function toggleCustomForm() {
+  _customFormOpen = !_customFormOpen;
+  _applyCustomFormState();
+  if (_customFormOpen) {
+    // Focus the name input after the CSS transition
+    setTimeout(() => document.getElementById('custom-ex-name').focus(), 180);
+  }
+}
+
+function _applyCustomFormState() {
+  const form    = document.getElementById('custom-exercise-form');
+  const toggle  = document.getElementById('btn-custom-toggle');
+  if (!form || !toggle) return;
+
+  if (_customFormOpen) {
+    form.classList.add('open');
+    toggle.classList.add('active');
+    // Rotate + icon into × visually via CSS class
+  } else {
+    form.classList.remove('open');
+    toggle.classList.remove('active');
+  }
+}
+
+/** Cancel: collapse form and clear inputs. */
+function cancelCustomForm() {
+  _customFormOpen = false;
+  _applyCustomFormState();
+  _resetCustomInputs();
+}
+
+function _resetCustomInputs() {
+  const nameEl = document.getElementById('custom-ex-name');
+  const urlEl  = document.getElementById('custom-ex-url');
+  if (nameEl) nameEl.value = '';
+  if (urlEl)  urlEl.value  = '';
+  validateCustomForm();
+}
+
+/** Enable the "Add Exercise" button only when the name field is non-empty. */
+function validateCustomForm() {
+  const name = (document.getElementById('custom-ex-name')?.value || '').trim();
+  const btn  = document.getElementById('btn-add-custom');
+  if (btn) btn.disabled = name.length === 0;
+}
+
+/** Submit the custom exercise and add it to the current day. */
+function submitCustomExercise() {
+  const name = (document.getElementById('custom-ex-name')?.value || '').trim();
+  const url  = (document.getElementById('custom-ex-url')?.value  || '').trim();
+  if (!name) return;
+
+  // Fall back to a blank anchor if no URL given
+  const videoUrl = url || '#';
+  
+  // 1. Save it to the user's custom DB (syncs to Firestore)
+  addCustomExerciseToDb(name, videoUrl);
+  
+  // 2. Add it to today's active workout list
+  addExercise(name, videoUrl);
+
+  // 3. Close the modal footer
+  cancelCustomForm();
 }
 
 // ══════════════════════════════════════════════════════════════

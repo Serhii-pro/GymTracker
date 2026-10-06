@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark rounded background -->
+  <rect width="32" height="32" rx="7" fill="#0a0a0f"/>
+  <!-- Dumbbell: left outer plate -->
+  <rect x="2" y="12" width="5" height="8" rx="1.5" fill="#39ff14"/>
+  <!-- Dumbbell: left inner plate -->
+  <rect x="7" y="10" width="4" height="12" rx="1" fill="#39ff14"/>
+  <!-- Dumbbell: bar -->
+  <rect x="11" y="14.5" width="10" height="3" rx="1" fill="#39ff14"/>
+  <!-- Dumbbell: right inner plate -->
+  <rect x="21" y="10" width="4" height="12" rx="1" fill="#39ff14"/>
+  <!-- Dumbbell: right outer plate -->
+  <rect x="25" y="12" width="5" height="8" rx="1.5" fill="#39ff14"/>
+</svg>

@@ -89,6 +89,39 @@ header {
 #save-indicator.visible { opacity: 1; }
 #save-indicator svg { width: 14px; height: 14px; }
 
+/* ── Cloud indicator ────────────────────────────────── */
+.cloud-indicator {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .78rem; font-weight: 600;
+  opacity: 0; transition: opacity .3s, background .3s, color .3s, border-color .3s;
+  padding: 4px 10px; border-radius: 20px;
+  white-space: nowrap;
+}
+.cloud-indicator.visible { opacity: 1; }
+
+.cloud-syncing {
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
+}
+.cloud-synced {
+  color: var(--neon);
+  background: rgba(57,255,20,.08);
+  border: 1px solid rgba(57,255,20,.2);
+}
+.cloud-error {
+  color: var(--danger);
+  background: rgba(255,61,90,.08);
+  border: 1px solid rgba(255,61,90,.2);
+}
+
+.cloud-spin {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  font-size: 1.1em;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
 /* ── Buttons ────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
@@ -762,4 +795,132 @@ footer a { color: var(--neon); text-decoration: none; }
   .stat-item--progress { flex: 0 0 100%; border-top: 1px solid var(--border); padding-top: 10px; }
   .stat-divider    { display: none; }
   .stat-value      { font-size: 1.2rem; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   CUSTOM EXERCISE FOOTER  (bottom of the Add Exercise modal)
+   ════════════════════════════════════════════════════════════ */
+
+/* Wrapper — sits below the scrollable list, always visible */
+.modal-custom-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+/* ── Toggle button ────────────────────────────────────── */
+.btn-custom-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: color .15s, background .15s;
+  letter-spacing: .02em;
+}
+.btn-custom-toggle:hover {
+  color: var(--neon);
+  background: rgba(57,255,20,.05);
+}
+.btn-custom-toggle.active {
+  color: var(--neon);
+  background: rgba(57,255,20,.06);
+}
+.btn-custom-toggle.active svg {
+  transform: rotate(45deg);
+  stroke: var(--neon);
+}
+.btn-custom-toggle svg {
+  flex-shrink: 0;
+  transition: transform .2s ease, stroke .15s;
+}
+
+/* ── Expandable form panel ────────────────────────────── */
+.custom-exercise-form {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .25s cubic-bezier(.22,1,.36,1);
+  overflow: hidden;
+}
+.custom-exercise-form.open {
+  grid-template-rows: 1fr;
+}
+
+/* Inner wrapper for the grid animation trick */
+.custom-form-fields,
+.custom-form-actions {
+  overflow: hidden;
+}
+
+.custom-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 16px 12px;
+}
+.custom-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 16px 14px;
+}
+
+/* ── Individual field ─────────────────────────────────── */
+.custom-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.custom-label {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.custom-label-opt {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: .7;
+}
+.custom-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: .88rem;
+  font-family: var(--font);
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.custom-input::placeholder {
+  color: var(--muted);
+  font-size: .82rem;
+}
+.custom-input:focus {
+  border-color: var(--neon);
+  box-shadow: 0 0 0 2px rgba(57,255,20,.12);
+}
+
+/* Disabled "Add Exercise" button */
+#btn-add-custom:disabled {
+  opacity: .35;
+  cursor: default;
+  animation: none;
+  box-shadow: none;
+}
+#btn-add-custom:not(:disabled) {
+  animation: pulse-neon 3s infinite;
 }
