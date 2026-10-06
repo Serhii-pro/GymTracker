@@ -96,6 +96,17 @@ function deleteWeekCloud(weekKey) {
   _weekRef(weekKey).delete().catch(e => console.error('[Firebase] deleteWeek:', e.message));
 }
 
+async function fetchAllWeeksCloud() {
+  if (!USER_UID) return [];
+  try {
+    const snap = await _userRef().collection('weeks').get();
+    return snap.docs.map(doc => ({ weekKey: doc.id, data: doc.data() }));
+  } catch (e) {
+    console.error('[Firebase] fetchAllWeeks:', e.message);
+    return [];
+  }
+}
+
 // ── Custom exercises ──────────────────────────────────────────
 
 function saveCustomExCloud(exercises) {

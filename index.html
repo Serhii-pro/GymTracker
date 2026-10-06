@@ -43,8 +43,18 @@
       <!-- New User Profile / Sign Out Block -->
       <div id="user-profile" class="user-profile" style="display: none;">
         <img id="user-avatar" src="" alt="Avatar" />
-        <button class="btn btn-ghost btn-sm" onclick="signOut()">Sign Out</button>
+        <button class="btn btn-ghost btn-sm" onclick="signOut()" title="Sign Out">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
       </div>
+      
+      <!-- Nav Toggles -->
+      <button id="btn-nav-stats" class="btn btn-neon btn-sm" onclick="openStatsView()">
+        📊 Stats
+      </button>
+      <button id="btn-nav-workout" class="btn btn-neon btn-sm" onclick="closeStatsView()" style="display: none;">
+        🏋️ Workouts
+      </button>
 
       <button class="btn btn-danger btn-sm" onclick="openConfirm()">
         🗑 Reset Week
@@ -56,46 +66,79 @@
 
 <!-- ── Main ────────────────────────────────────────────────── -->
 <main>
-  <!-- ── Week Navigation ──────────────────────────────────── -->
-  <div class="week-nav">
-    <button class="btn-week-nav" onclick="prevWeek()" title="Previous week (←)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2.5"
-           stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
-    </button>
+  
+  <!-- ── WORKOUT VIEW ── -->
+  <div id="view-workout">
+    <!-- ── Week Navigation ──────────────────────────────────── -->
+    <div class="week-nav">
+      <button class="btn-week-nav" onclick="prevWeek()" title="Previous week (←)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
 
-    <div class="week-nav-center">
-      <div class="week-nav-top">
-        <span id="week-label" class="week-label-text">Week —</span>
-        <span id="week-context" class="week-context-badge badge-current">Current Week</span>
+      <div class="week-nav-center">
+        <div class="week-nav-top">
+          <span id="week-label" class="week-label-text">Week —</span>
+          <span id="week-context" class="week-context-badge badge-current">Current Week</span>
+        </div>
+        <div id="week-date-range" class="week-date-range">Loading…</div>
       </div>
-      <div id="week-date-range" class="week-date-range">Loading…</div>
+
+      <button class="btn-week-nav" onclick="nextWeek()" title="Next week (→)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+
+      <button class="btn btn-ghost btn-sm" id="btn-today" onclick="goToCurrentWeek()">
+        Today
+      </button>
     </div>
 
-    <button class="btn-week-nav" onclick="nextWeek()" title="Next week (→)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2.5"
-           stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"/>
-      </svg>
-    </button>
+    <!-- ── Stats Bar ─────────────────────────────────────────── -->
+    <div class="week-stats" id="week-stats">
+      <div class="stats-empty">No exercises logged for this week yet — add some! 💪</div>
+    </div>
 
-    <button class="btn btn-ghost btn-sm" id="btn-today" onclick="goToCurrentWeek()">
-      Today
-    </button>
+    <!-- ── Day Cards ─────────────────────────────────────────── -->
+    <div class="days-grid" id="days-grid">
+      <!-- Populated by render.js → renderAll() -->
+    </div>
   </div>
+  <!-- ── END WORKOUT VIEW ── -->
 
-  <!-- ── Stats Bar ─────────────────────────────────────────── -->
-  <div class="week-stats" id="week-stats">
-    <div class="stats-empty">No exercises logged for this week yet — add some! 💪</div>
-  </div>
+  <!-- ── STATS / ANALYTICS VIEW ── -->
+  <div id="view-stats" style="display: none;">
+    <h2 class="stats-page-title">Analytics & Progress</h2>
+    
+    <div class="chart-card">
+      <h3>Workout Consistency</h3>
+      <p class="chart-subtitle">Total workouts completed per week</p>
+      <div class="chart-container">
+        <canvas id="consistencyChart"></canvas>
+      </div>
+    </div>
 
-  <!-- ── Day Cards ─────────────────────────────────────────── -->
-  <div class="days-grid" id="days-grid">
-    <!-- Populated by render.js → renderAll() -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>Exercise Progression</h3>
+          <p class="chart-subtitle">Max weight logged per week</p>
+        </div>
+        <select id="stats-exercise-select" class="custom-input" style="width: auto; min-width: 200px;" onchange="updateProgressionChart()"></select>
+      </div>
+      <div class="chart-container">
+        <canvas id="progressionChart"></canvas>
+      </div>
+    </div>
   </div>
+  <!-- ── END STATS VIEW ── -->
+
 </main>
 
 <footer>
@@ -197,6 +240,9 @@
 </div>
 
 <!-- ── Scripts (order matters) ──────────────────────────────── -->
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <!-- Firebase SDK (compat v9) -->
 <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
@@ -209,6 +255,7 @@
 <script src="js/render.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/week.js"></script>
+<script src="js/stats.js"></script>
 <script src="js/app.js"></script>
 
 <!-- ── Auth Overlay ─────────────────────────────────────────── -->

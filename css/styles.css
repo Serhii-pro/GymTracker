@@ -990,3 +990,59 @@ footer a { color: var(--neon); text-decoration: none; }
   border: 1px solid var(--border);
 }
 
+/* ════════════════════════════════════════════════════════════
+   STATS & ANALYTICS VIEW
+   ════════════════════════════════════════════════════════════ */
+
+.stats-page-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.chart-card h3 {
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.chart-subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .chart-container {
+    height: 250px;
+  }
+  .chart-card {
+    padding: 16px;
+  }
+}
+
