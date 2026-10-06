@@ -924,3 +924,69 @@ footer a { color: var(--neon); text-decoration: none; }
 #btn-add-custom:not(:disabled) {
   animation: pulse-neon 3s infinite;
 }
+
+/* ════════════════════════════════════════════════════════════
+   AUTH (Google Login Overlay & Profile)
+   ════════════════════════════════════════════════════════════ */
+
+/* Overlay taking up the whole screen until logged in */
+.auth-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10,10,15,0.95);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s ease;
+}
+.auth-overlay.open {
+  opacity: 1; pointer-events: auto;
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 40px; border-radius: var(--radius);
+  text-align: center;
+  box-shadow: var(--shadow);
+  max-width: 340px; width: 90%;
+  transform: translateY(20px); transition: transform .3s ease;
+}
+.auth-overlay.open .auth-card {
+  transform: translateY(0);
+}
+
+.auth-card .logo {
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+.auth-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+}
+
+/* Google Button */
+.btn-google {
+  background: #fff;
+  color: #3c4043;
+  width: 100%;
+  display: flex; justify-content: center;
+  font-weight: 500; font-size: 0.95rem;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.btn-google:hover {
+  background: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Header profile block */
+.user-profile {
+  display: flex; align-items: center; gap: 10px;
+}
+.user-profile img {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border);
+}
+

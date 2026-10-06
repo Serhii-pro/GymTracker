@@ -78,3 +78,7 @@ function addCustomExerciseToDb(name, videoUrl) {
   localStorage.setItem(_CUSTOM_EX_LS_KEY, JSON.stringify(CUSTOM_EXERCISES));
   saveCustomExCloud(CUSTOM_EXERCISES); // fire-and-forget
 }
+
+function clearCustomExercises() {
+  CUSTOM_EXERCISES = [];
+}

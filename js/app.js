@@ -26,17 +26,37 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Bootstrap ─────────────────────────────────────────────────
+// ── Bootstrap & Auth Flow ─────────────────────────────────────
 
-// 1. Migrate any old v2 localStorage data
-_migrateIfNeeded(TODAY_WEEK_KEY);
+// Listen to Firebase Auth state
+onAuthReady((user) => {
+  const authOverlay = document.getElementById('auth-overlay');
+  
+  if (user) {
+    // ── Logged In ──
+    authOverlay.classList.remove('open');
+    
+    // 1. Migrate any old v2 localStorage data
+    _migrateIfNeeded(TODAY_WEEK_KEY);
+    
+    // 2. Load custom exercises (Firestore)
+    loadCustomExercises();
+    
+    // 3. Load current week (Firestore)
+    loadState(TODAY_WEEK_KEY);
+    
+    // 4. Paint the UI
+    renderAll();
+    updateWeekUI();
 
-// 2. Load custom exercises (localStorage instantly, Firestore in bg)
-loadCustomExercises();
-
-// 3. Load current week (localStorage instantly, Firestore in bg)
-loadState(TODAY_WEEK_KEY);
-
-// 4. Paint the UI
-renderAll();
-updateWeekUI();
+  } else {
+    // ── Logged Out ──
+    authOverlay.classList.add('open');
+    
+    // Hide UI and clear state
+    clearAllState();
+    clearCustomExercises();
+    
+    document.getElementById('user-profile').style.display = 'none';
+  }
+});

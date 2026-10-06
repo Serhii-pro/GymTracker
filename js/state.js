@@ -110,3 +110,10 @@ function resetState() {
   _ensureDays();
   saveState();
 }
+
+function clearAllState() {
+  state = {};
+  _activeWeekKey = null;
+  const grid = document.getElementById('days-grid');
+  if (grid) grid.innerHTML = '';
+}
