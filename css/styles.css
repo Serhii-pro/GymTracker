@@ -170,8 +170,51 @@ header {
 main {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 28px 20px 60px;
+  padding: 28px 20px 100px; /* added 100px bottom padding for the nav bar */
   position: relative; z-index: 1;
+}
+
+/* ── Bottom App Navigation ───────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.4);
+}
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font);
+  flex: 1;
+  height: 100%;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.nav-tab svg {
+  transition: transform 0.2s, stroke 0.2s;
+}
+.nav-tab:hover {
+  color: #fff;
+}
+.nav-tab.active {
+  color: var(--neon);
+}
+.nav-tab.active svg {
+  stroke: var(--neon);
 }
 
 /* ── Week header ────────────────────────────────────── */
@@ -994,55 +1037,115 @@ footer a { color: var(--neon); text-decoration: none; }
    STATS & ANALYTICS VIEW
    ════════════════════════════════════════════════════════════ */
 
+.stats-header-bar {
+  margin-bottom: 24px;
+}
+
 .stats-page-title {
   font-size: 1.8rem;
   font-weight: 800;
-  margin-bottom: 24px;
+  margin-bottom: 6px;
   color: #fff;
   letter-spacing: -0.5px;
+}
+
+.stats-page-subtitle {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* Grid layout for displaying all exercise progression cards */
+.stats-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 20px;
 }
 
 .chart-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 24px;
+  padding: 22px;
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chart-card:hover {
+  border-color: rgba(57, 255, 20, 0.25);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.7);
 }
 
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.chart-card h3 {
-  font-size: 1.2rem;
+.chart-card h3,
+.exercise-progression-title {
+  font-size: 1.15rem;
+  font-weight: 700;
   color: var(--text);
   margin-bottom: 4px;
+  line-height: 1.3;
 }
 
 .chart-subtitle {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--muted);
+}
+
+/* Neon peak weight badge */
+.chart-stat-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 5px 11px;
+  background: rgba(57, 255, 20, 0.08);
+  border: 1px solid rgba(57, 255, 20, 0.25);
+  border-radius: 8px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.chart-stat-badge .badge-num {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--neon);
+  line-height: 1;
+}
+
+.chart-stat-badge .badge-unit {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--neon);
+  opacity: 0.8;
+  text-transform: uppercase;
 }
 
 .chart-container {
   position: relative;
-  height: 300px;
+  height: 260px;
   width: 100%;
 }
 
 @media (max-width: 600px) {
+  .stats-charts-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
   .chart-container {
-    height: 250px;
+    height: 230px;
   }
   .chart-card {
     padding: 16px;
+  }
+  .stats-page-title {
+    font-size: 1.5rem;
   }
 }
 

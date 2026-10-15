@@ -85,7 +85,7 @@ function addExercise(name, videoUrl) {
   // Guard against duplicates
   if (state[modalDayKey].some(e => e.name === name)) return;
 
-  state[modalDayKey].push({ name, videoUrl, sets: ['', '', '', ''] });
+  state[modalDayKey].push({ name, videoUrl, sets: ['', '', '', ''], updatedAt: Date.now() });
   saveState();
   rerenderCard(modalDayKey);
 

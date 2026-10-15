@@ -152,6 +152,7 @@ function removeExercise(dayKey, idx) {
 
 function addSet(dayKey, idx) {
   state[dayKey][idx].sets.push('');
+  state[dayKey][idx].updatedAt = Date.now();
   saveState();
   rerenderCard(dayKey);
 }
@@ -159,11 +160,13 @@ function addSet(dayKey, idx) {
 function removeSet(dayKey, idx, setIdx) {
   if (state[dayKey][idx].sets.length <= 1) return; // keep at least 1
   state[dayKey][idx].sets.splice(setIdx, 1);
+  state[dayKey][idx].updatedAt = Date.now();
   saveState();
   rerenderCard(dayKey);
 }
 
 function updateSet(dayKey, idx, setIdx, value) {
   state[dayKey][idx].sets[setIdx] = value;
+  state[dayKey][idx].updatedAt = Date.now();
   saveState(); // saves on every keystroke
 }
