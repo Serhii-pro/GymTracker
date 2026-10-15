@@ -26,6 +26,15 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// ── Register Service Worker ───────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.info('[SW] Registered:', reg.scope))
+      .catch(err => console.warn('[SW] Registration failed:', err));
+  });
+}
+
 // ── Bootstrap & Auth Flow ─────────────────────────────────────
 
 // Listen to Firebase Auth state

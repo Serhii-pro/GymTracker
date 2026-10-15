@@ -25,6 +25,12 @@ async function openStatsView() {
   if (tabWorkout) tabWorkout.classList.remove('active');
   if (tabStats) tabStats.classList.add('active');
 
+  // Update Top Nav button state
+  const btnTopStats = document.getElementById('btn-top-stats');
+  const btnTopWorkouts = document.getElementById('btn-top-workouts');
+  if (btnTopStats) btnTopStats.style.display = 'none';
+  if (btnTopWorkouts) btnTopWorkouts.style.display = 'inline-flex';
+
   showCloudSyncing();
   _allWeeksData = await fetchAllWeeksCloud();
   _setCloudBadge('synced');
@@ -54,6 +60,12 @@ function closeStatsView() {
   const tabStats = document.getElementById('tab-stats');
   if (tabWorkout) tabWorkout.classList.add('active');
   if (tabStats) tabStats.classList.remove('active');
+
+  // Update Top Nav button state
+  const btnTopStats = document.getElementById('btn-top-stats');
+  const btnTopWorkouts = document.getElementById('btn-top-workouts');
+  if (btnTopStats) btnTopStats.style.display = 'inline-flex';
+  if (btnTopWorkouts) btnTopWorkouts.style.display = 'none';
 
   _destroyCharts();
 }

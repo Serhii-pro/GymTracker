@@ -55,26 +55,40 @@ header {
 }
 .header-inner {
   max-width: 1400px;
+  width: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
-  height: 64px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: clamp(8px, 2vw, 16px);
+  flex-wrap: wrap;
 }
 .logo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 1.25rem; font-weight: 800; letter-spacing: -.5px;
+  display: flex; align-items: center; gap: clamp(6px, 1.5vw, 10px);
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem); font-weight: 800; letter-spacing: -.5px;
+  flex-shrink: 0;
 }
 .logo-icon {
-  width: 36px; height: 36px; border-radius: 10px;
+  width: clamp(30px, 6vw, 36px); height: clamp(30px, 6vw, 36px); border-radius: 9px;
   background: linear-gradient(135deg, var(--neon), var(--neon2));
   display: flex; align-items: center; justify-content: center;
   font-size: 1.1rem; box-shadow: var(--glow);
+  flex-shrink: 0;
+}
+.logo-icon svg {
+  width: clamp(18px, 4vw, 22px);
+  height: clamp(18px, 4vw, 22px);
 }
 .logo span { color: var(--neon); }
 
-.header-actions { display: flex; align-items: center; gap: 10px; }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(5px, 1.5vw, 10px);
+  flex-wrap: wrap;
+}
 
 /* ── Save indicator ─────────────────────────────────── */
 #save-indicator {
@@ -169,8 +183,10 @@ header {
 /* ── Main ────────────────────────────────────────────── */
 main {
   max-width: 1400px;
+  width: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
-  padding: 28px 20px 100px; /* added 100px bottom padding for the nav bar */
+  padding: clamp(14px, 2.5vw, 28px) clamp(10px, 2.5vw, 20px) 100px;
   position: relative; z-index: 1;
 }
 
@@ -230,8 +246,10 @@ main {
 /* ── Days grid ──────────────────────────────────────── */
 .days-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(12px, 2.5vw, 20px);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ── Day card ───────────────────────────────────────── */
@@ -326,13 +344,16 @@ main {
 
 .exercise-header {
   padding: 10px 12px;
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
   border-bottom: 1px solid var(--border);
+  width: 100%;
+  box-sizing: border-box;
 }
 .exercise-name-link {
-  flex: 1; font-size: .9rem; font-weight: 600;
+  flex: 1 1 auto; min-width: 0; font-size: clamp(0.85rem, 2.2vw, 0.92rem); font-weight: 600;
   color: var(--neon); text-decoration: none;
   transition: color .15s;
+  overflow-wrap: break-word; word-break: break-word;
 }
 .exercise-name-link:hover { color: #fff; text-shadow: 0 0 12px var(--neon); }
 .exercise-name-link::after {
@@ -342,7 +363,7 @@ main {
 }
 
 .btn-remove-ex {
-  width: 22px; height: 22px; border-radius: 50%;
+  width: 24px; height: 24px; border-radius: 50%;
   background: rgba(255,61,90,.1); border: 1px solid rgba(255,61,90,.2);
   color: var(--danger); font-size: .8rem; line-height: 1;
   display: flex; align-items: center; justify-content: center;
@@ -355,10 +376,12 @@ main {
 }
 
 /* ── Sets ───────────────────────────────────────────── */
-.sets-container { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.sets-container { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; width: 100%; box-sizing: border-box; }
 
 .set-row {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: clamp(6px, 1.8vw, 10px);
+  width: 100%;
+  box-sizing: border-box;
   animation: setIn .25s ease both;
 }
 @keyframes setIn {
@@ -367,17 +390,20 @@ main {
 }
 
 .set-label {
-  font-size: .72rem; font-weight: 700; color: var(--muted);
+  font-size: clamp(0.68rem, 1.8vw, 0.72rem); font-weight: 700; color: var(--muted);
   text-transform: uppercase; letter-spacing: .04em;
-  min-width: 44px; flex-shrink: 0;
+  flex: 0 0 clamp(38px, 10vw, 46px);
+  min-width: 0;
 }
 
 .set-input {
-  flex: 1; background: var(--bg);
+  flex: 1 1 0; min-width: 0; width: 100%;
+  background: var(--bg);
   border: 1px solid var(--border); border-radius: 6px;
-  color: var(--text); font-size: .85rem; font-family: var(--font);
-  padding: 6px 10px; outline: none;
+  color: var(--text); font-size: clamp(0.84rem, 2vw, 0.9rem); font-family: var(--font);
+  padding: clamp(6px, 1.8vw, 8px) clamp(8px, 2vw, 12px); outline: none;
   transition: border-color .15s, box-shadow .15s;
+  box-sizing: border-box;
 }
 .set-input::placeholder { color: var(--muted); font-size: .78rem; }
 .set-input:focus {
@@ -554,10 +580,127 @@ footer {
 }
 footer a { color: var(--neon); text-decoration: none; }
 
-/* ── Responsive ─────────────────────────────────────── */
-@media (max-width: 640px) {
-  .days-grid   { grid-template-columns: 1fr; }
-  .week-header { flex-direction: column; align-items: flex-start; }
+/* ── Mobile Responsive (≤768px) ────────────────────── */
+@media (max-width: 768px) {
+  /* Stack day cards into a fluid single vertical column */
+  .days-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: clamp(12px, 3vw, 16px);
+  }
+
+  /* Compact fluid main padding */
+  main {
+    padding: clamp(12px, 3vw, 16px) clamp(8px, 2.5vw, 14px) 100px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Header: compact height, flexible wrapping */
+  .header-inner {
+    height: auto;
+    min-height: 50px;
+    padding: 8px 0;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Smaller fluid logo on mobile */
+  .logo {
+    font-size: clamp(0.95rem, 3vw, 1.1rem);
+    gap: 6px;
+  }
+  .logo-icon {
+    width: clamp(28px, 7vw, 32px);
+    height: clamp(28px, 7vw, 32px);
+    border-radius: 8px;
+  }
+  .logo-icon svg {
+    width: clamp(16px, 4vw, 18px);
+    height: clamp(16px, 4vw, 18px);
+  }
+
+  /* Header actions: fluid flex wrapping without overflowing */
+  .header-actions {
+    gap: clamp(3px, 1.2vw, 6px);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex: 1 1 auto;
+  }
+
+  /* Compact buttons on mobile */
+  .btn-sm {
+    padding: 5px clamp(6px, 1.5vw, 10px);
+    font-size: clamp(0.7rem, 2vw, 0.75rem);
+    white-space: nowrap;
+  }
+
+  /* Week nav: fluid 2-tier layout that never overflows on small screens */
+  .week-nav {
+    padding: clamp(8px, 2vw, 10px) clamp(6px, 1.5vw, 10px);
+    gap: clamp(4px, 1.5vw, 8px);
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .week-nav-center {
+    order: -1;
+    width: 100%;
+    flex: 0 0 100%;
+    margin-bottom: 2px;
+  }
+
+  /* Touch target: Add Exercise button full width and easy to tap */
+  .add-exercise-area .btn {
+    min-height: 48px;
+    font-size: clamp(0.82rem, 2.2vw, 0.88rem);
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Touch target: set input fields */
+  .set-input {
+    min-height: 44px;
+    font-size: clamp(0.85rem, 2.2vw, 0.92rem);
+  }
+
+  /* Modal: full-width sheet on mobile */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal {
+    max-height: 90vh;
+    border-radius: var(--radius) var(--radius) 0 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  .modal-search {
+    min-height: 44px;
+    font-size: 0.95rem;
+  }
+  .btn-custom-toggle {
+    min-height: 44px;
+  }
+
+  /* Modal exercise items: bigger tap targets */
+  .db-item {
+    min-height: 48px;
+  }
+
+  /* Bottom nav: respect safe area (notched phones) */
+  .bottom-nav {
+    height: auto;
+    min-height: 60px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* User avatar smaller */
+  .user-profile img {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 /* ── Pulse animation ────────────────────────────────── */
@@ -590,31 +733,30 @@ footer a { color: var(--neon); text-decoration: none; }
 */
 
 .week-nav {
-  /* One horizontal row, vertically centred, never wraps */
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-wrap: nowrap;
-  gap: 12px;
+  gap: clamp(6px, 1.8vw, 12px);
+  width: 100%;
+  box-sizing: border-box;
 
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px 16px;
+  padding: clamp(8px, 2vw, 12px) clamp(8px, 2vw, 16px);
   margin-bottom: 14px;
   box-shadow: var(--shadow);
-  min-height: 60px;
+  min-height: 56px;
 }
 
 /* ── Arrow buttons ‹ › ───────────────────────────────── */
 .btn-week-nav {
-  /* Explicit flex item – fixed square, never shrinks */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 36px;
-  height: 36px;
+  width: clamp(32px, 8vw, 36px);
+  height: clamp(32px, 8vw, 36px);
 
   background: var(--card2);
   border: 1px solid var(--border);
@@ -629,11 +771,10 @@ footer a { color: var(--neon); text-decoration: none; }
   box-shadow: var(--glow);
 }
 .btn-week-nav:active { transform: scale(.92); }
-.btn-week-nav svg { display: block; flex-shrink: 0; }
+.btn-week-nav svg { display: block; flex-shrink: 0; width: clamp(14px, 3.5vw, 16px); height: clamp(14px, 3.5vw, 16px); }
 
 /* ── Center block (week label + badge + date) ────────── */
 .week-nav-center {
-  /* Takes all remaining space, content centred */
   flex: 1 1 auto;
   min-width: 0;          /* allow shrink without overflow */
   display: flex;
@@ -644,27 +785,26 @@ footer a { color: var(--neon); text-decoration: none; }
   text-align: center;
 }
 
-/* Top row: bold week number + coloured badge — always one line */
+/* Top row: bold week number + coloured badge */
 .week-nav-top {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  flex-wrap: nowrap;
-  gap: 8px;
-  white-space: nowrap;
+  flex-wrap: wrap;
+  gap: clamp(4px, 1.5vw, 8px);
 }
 
 .week-label-text {
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
   font-weight: 800;
   letter-spacing: -.3px;
   white-space: nowrap;
 }
 
-/* Date range row — always one line */
+/* Date range row */
 .week-date-range {
-  font-size: .76rem;
+  font-size: clamp(0.68rem, 1.8vw, 0.76rem);
   color: var(--muted);
   white-space: nowrap;
   letter-spacing: .01em;
@@ -675,11 +815,11 @@ footer a { color: var(--neon); text-decoration: none; }
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
-  font-size: .62rem;
+  font-size: clamp(0.55rem, 1.4vw, 0.62rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .08em;
-  padding: 2px 8px;
+  padding: 2px clamp(5px, 1.2vw, 8px);
   border-radius: 20px;
   line-height: 1.6;
   flex-shrink: 0;
@@ -701,10 +841,11 @@ footer a { color: var(--neon); text-decoration: none; }
 }
 
 /* ── Today button – pinned to the right ──────────────── */
-/* Override .btn defaults that could cause layout issues */
 #btn-today {
   flex-shrink: 0;
   white-space: nowrap;
+  padding: clamp(4px, 1.2vw, 6px) clamp(8px, 1.8vw, 12px);
+  font-size: clamp(0.72rem, 1.8vw, 0.78rem);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -724,13 +865,15 @@ footer a { color: var(--neon); text-decoration: none; }
   align-items: center;
   flex-wrap: nowrap;
   gap: 0;
+  width: 100%;
+  box-sizing: border-box;
 
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px 20px;
+  padding: clamp(10px, 2.5vw, 16px) clamp(8px, 2vw, 20px);
   margin-bottom: 24px;
-  min-height: 76px;
+  min-height: 68px;
   box-shadow: var(--shadow);
 }
 
@@ -739,8 +882,9 @@ footer a { color: var(--neon); text-decoration: none; }
   flex: 1;
   text-align: center;
   color: var(--muted);
-  font-size: .85rem;
+  font-size: clamp(0.78rem, 2vw, 0.85rem);
   font-style: italic;
+  padding: 8px;
 }
 
 /* Each stat column */
@@ -752,13 +896,13 @@ footer a { color: var(--neon); text-decoration: none; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 8px;
+  padding: 0 clamp(2px, 1vw, 8px);
 }
 .stat-item--progress { flex: 1.4 1 0; }
 
 /* The big number */
 .stat-value {
-  font-size: 1.45rem;
+  font-size: clamp(1.15rem, 3.5vw, 1.45rem);
   font-weight: 800;
   line-height: 1;
   margin-bottom: 4px;
@@ -769,21 +913,21 @@ footer a { color: var(--neon); text-decoration: none; }
 
 /* Fraction suffix  "/32" */
 .stat-of {
-  font-size: .72rem;
+  font-size: clamp(0.68rem, 1.8vw, 0.72rem);
   font-weight: 600;
   color: var(--muted);
 }
 
 /* "%" suffix */
 .stat-unit {
-  font-size: .78rem;
+  font-size: clamp(0.72rem, 1.8vw, 0.78rem);
   font-weight: 600;
   color: var(--muted);
 }
 
 /* Label underneath the number */
 .stat-label {
-  font-size: .65rem;
+  font-size: clamp(0.6rem, 1.5vw, 0.65rem);
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: .07em;
@@ -794,14 +938,14 @@ footer a { color: var(--neon); text-decoration: none; }
 /* Thin vertical divider between columns */
 .stat-divider {
   width: 1px;
-  height: 40px;
+  height: clamp(30px, 8vw, 40px);
   background: var(--border);
   flex-shrink: 0;
 }
 
 /* Mini progress bar (completion column) */
 .stat-progress-bar {
-  width: 68px;
+  width: min(100%, 80px);
   height: 4px;
   background: var(--border);
   border-radius: 2px;
@@ -830,14 +974,28 @@ footer a { color: var(--neon); text-decoration: none; }
   /* Stats: 2×2 grid + completion below */
   .week-stats {
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    padding: 14px;
+    justify-content: space-around;
+    gap: clamp(8px, 2vw, 12px);
+    padding: clamp(10px, 2.5vw, 14px);
   }
-  .stat-item       { flex: 0 0 calc(50% - 1px); min-width: 100px; }
-  .stat-item--progress { flex: 0 0 100%; border-top: 1px solid var(--border); padding-top: 10px; }
+  .stat-item {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 0;
+    max-width: 50%;
+    box-sizing: border-box;
+    padding: 4px;
+  }
+  .stat-item--progress {
+    flex: 1 1 100%;
+    max-width: 100%;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
   .stat-divider    { display: none; }
-  .stat-value      { font-size: 1.2rem; }
+  .stat-value      { font-size: clamp(1.1rem, 3.5vw, 1.25rem); }
+  .stat-progress-bar {
+    width: min(100%, 140px);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1057,18 +1215,23 @@ footer a { color: var(--neon); text-decoration: none; }
 /* Grid layout for displaying all exercise progression cards */
 .stats-charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(12px, 2.5vw, 20px);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .chart-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 22px;
+  padding: clamp(14px, 3vw, 22px);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -1081,21 +1244,25 @@ footer a { color: var(--neon); text-decoration: none; }
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: clamp(8px, 2vw, 14px);
+  margin-bottom: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .chart-card h3,
 .exercise-progression-title {
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 2.8vw, 1.15rem);
   font-weight: 700;
   color: var(--text);
   margin-bottom: 4px;
   line-height: 1.3;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .chart-subtitle {
-  font-size: 0.82rem;
+  font-size: clamp(0.75rem, 1.8vw, 0.82rem);
   color: var(--muted);
 }
 
@@ -1104,7 +1271,7 @@ footer a { color: var(--neon); text-decoration: none; }
   display: inline-flex;
   align-items: baseline;
   gap: 3px;
-  padding: 5px 11px;
+  padding: 4px clamp(8px, 2vw, 11px);
   background: rgba(57, 255, 20, 0.08);
   border: 1px solid rgba(57, 255, 20, 0.25);
   border-radius: 8px;
@@ -1113,14 +1280,14 @@ footer a { color: var(--neon); text-decoration: none; }
 }
 
 .chart-stat-badge .badge-num {
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
   font-weight: 800;
   color: var(--neon);
   line-height: 1;
 }
 
 .chart-stat-badge .badge-unit {
-  font-size: 0.72rem;
+  font-size: clamp(0.65rem, 1.6vw, 0.72rem);
   font-weight: 700;
   color: var(--neon);
   opacity: 0.8;
@@ -1129,23 +1296,23 @@ footer a { color: var(--neon); text-decoration: none; }
 
 .chart-container {
   position: relative;
-  height: 260px;
+  height: clamp(200px, 45vw, 260px);
   width: 100%;
+  min-width: 0;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .stats-charts-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .chart-container {
-    height: 230px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: clamp(12px, 3vw, 16px);
   }
   .chart-card {
-    padding: 16px;
+    padding: clamp(12px, 3vw, 16px);
   }
   .stats-page-title {
-    font-size: 1.5rem;
+    font-size: clamp(1.35rem, 4.5vw, 1.6rem);
   }
 }
 
