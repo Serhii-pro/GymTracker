@@ -26,11 +26,14 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Register Service Worker ───────────────────────────────────
+// ── Register Service Worker (with cache-bust & auto-update) ──
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.info('[SW] Registered:', reg.scope))
+    navigator.serviceWorker.register('./sw.js?v=20261015')
+      .then(reg => {
+        console.info('[SW] Registered:', reg.scope);
+        reg.update();
+      })
       .catch(err => console.warn('[SW] Registration failed:', err));
   });
 }

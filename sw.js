@@ -1,16 +1,18 @@
 /**
  * Service Worker for GYM Tracker PWA
  * ─────────────────────────────────────────────────────────────
- * Network-First strategy with cache fallback.
- * Bumps cache version and immediately claims clients to bust stale CSS.
+ * Cache-bust version: gym-tracker-v20261015-bust
+ * Network-First fetch strategy: fetches fresh from network first,
+ * updating the cache in the background, fallback to cache when offline.
  */
 
-const CACHE_NAME = 'gym-tracker-v5-20261015';
+const CACHE_NAME = 'gym-tracker-v20261015-bust';
 
 const APP_SHELL = [
   './',
   './index.html',
   './css/styles.css',
+  './css/styles.css?v=20261015',
   './js/data.js',
   './js/firebase.js',
   './js/state.js',
@@ -30,7 +32,7 @@ const APP_SHELL = [
   './manifest.json',
 ];
 
-// ── Install: pre-cache fresh app shell and immediately activate ──
+// ── Install: immediately activate without waiting ────────────
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
@@ -39,42 +41,44 @@ self.addEventListener('install', event => {
   );
 });
 
-// ── Activate: delete ALL old caches and immediately take control ──
+// ── Activate: wipe ALL old caches and immediately claim clients ──
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
         keys.filter(k => k !== CACHE_NAME).map(k => {
-          console.info('[SW] Deleting old cache:', k);
+          console.info('[SW] Deleting stale cache:', k);
           return caches.delete(k);
         })
-      ))
-      .then(() => self.clients.claim())
+      );
+      await self.clients.claim();
+    })()
   );
 });
 
-// ── Fetch: strictly Network-First, fallback to cache only when offline ──
+// ── Fetch: Network-First strategy ────────────────────────────
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Only handle same-origin GET requests
+  // Skip cross-origin or non-GET requests
   if (event.request.method !== 'GET' || url.origin !== location.origin) {
     return;
   }
 
   event.respondWith(
-    fetch(event.request, { cache: 'no-cache' })
-      .then(response => {
-        // Clone and cache successful response
-        if (response && response.status === 200) {
-          const clone = response.clone();
+    fetch(event.request, { cache: 'reload' })
+      .then(networkResponse => {
+        if (networkResponse && networkResponse.status === 200) {
+          const clone = networkResponse.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
-        return response;
+        return networkResponse;
       })
-      .catch(() => {
-        // Offline fallback
-        return caches.match(event.request, { ignoreSearch: true });
+      .catch(async () => {
+        // Fallback to cache when offline
+        const cached = await caches.match(event.request, { ignoreSearch: true });
+        return cached || caches.match('./index.html');
       })
   );
 });
