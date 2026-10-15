@@ -1,12 +1,11 @@
 /**
  * Service Worker for GYM Tracker PWA
  * ─────────────────────────────────────────────────────────────
- * Minimal service worker that satisfies PWA installability.
- * Uses a network-first strategy so live data from Firebase
- * always comes through, with a cache fallback for the app shell.
+ * Network-First strategy with cache fallback.
+ * Bumps cache version and immediately claims clients to bust stale CSS.
  */
 
-const CACHE_NAME = 'gym-tracker-v3';
+const CACHE_NAME = 'gym-tracker-v5-20261015';
 
 const APP_SHELL = [
   './',
@@ -31,43 +30,51 @@ const APP_SHELL = [
   './manifest.json',
 ];
 
-// ── Install: pre-cache the app shell ──────────────────────────
+// ── Install: pre-cache fresh app shell and immediately activate ──
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(APP_SHELL))
-      .then(() => self.skipWaiting())
   );
 });
 
-// ── Activate: clean old caches ────────────────────────────────
+// ── Activate: delete ALL old caches and immediately take control ──
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-      )
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then(keys => Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => {
+          console.info('[SW] Deleting old cache:', k);
+          return caches.delete(k);
+        })
+      ))
+      .then(() => self.clients.claim())
   );
 });
 
-// ── Fetch: network-first, fallback to cache ───────────────────
+// ── Fetch: strictly Network-First, fallback to cache only when offline ──
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Skip non-GET and cross-origin requests (Firebase, CDNs, etc.)
+  // Only handle same-origin GET requests
   if (event.request.method !== 'GET' || url.origin !== location.origin) {
     return;
   }
 
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: 'no-cache' })
       .then(response => {
-        // Clone and cache fresh response
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        // Clone and cache successful response
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => {
+        // Offline fallback
+        return caches.match(event.request, { ignoreSearch: true });
+      })
   );
 });
