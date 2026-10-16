@@ -1,18 +1,19 @@
 /**
  * Service Worker for GYM Tracker PWA
  * ─────────────────────────────────────────────────────────────
- * Cache-bust version: gym-tracker-v20261015-bust
+ * Cache-bust version: gym-tracker-v20261016-firefox
  * Network-First fetch strategy: fetches fresh from network first,
  * updating the cache in the background, fallback to cache when offline.
+ * Compatible with Chrome, Firefox (Desktop & Android), Safari.
  */
 
-const CACHE_NAME = 'gym-tracker-v20261015-bust';
+const CACHE_NAME = 'gym-tracker-v20261016-firefox';
 
 const APP_SHELL = [
   './',
   './index.html',
   './css/styles.css',
-  './css/styles.css?v=20261015',
+  './css/styles.css?v=20261016',
   './js/data.js',
   './js/firebase.js',
   './js/state.js',
@@ -29,6 +30,8 @@ const APP_SHELL = [
   './icons/apple-touch-icon.png',
   './icons/icon-192.svg',
   './icons/icon-512.svg',
+  './icons/icon-maskable-192.svg',
+  './icons/icon-maskable-512.svg',
   './manifest.json',
 ];
 

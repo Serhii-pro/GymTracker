@@ -20,16 +20,17 @@
   --font:      'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
-html,
-body,
-#root {
+html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* Firefox standard scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--surface);
 }
 
 body {
@@ -37,9 +38,26 @@ body {
   color: var(--text);
   font-family: var(--font);
   min-height: 100vh;
+  min-height: 100dvh; /* dynamic viewport height — Firefox 109+, Chrome 108+, Safari 15.4+ */
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* ── Scrollbar ──────────────────────────────────────── */
+#root {
+  scroll-behavior: smooth;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Scrollbar (Webkit / Blink) ────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--surface); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
@@ -207,7 +225,7 @@ main {
 .bottom-nav {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  height: 64px;
+  min-height: 64px;
   background: var(--surface);
   border-top: 1px solid var(--border);
   display: flex;
@@ -215,6 +233,8 @@ main {
   align-items: center;
   z-index: 1000;
   box-shadow: 0 -4px 12px rgba(0,0,0,0.4);
+  /* Safe area for notched phones + Firefox dynamic toolbar */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .nav-tab {
   display: flex;
@@ -449,6 +469,7 @@ main {
   position: fixed; inset: 0; z-index: 500;
   background: rgba(0,0,0,.7);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   opacity: 0; pointer-events: none;
@@ -552,6 +573,7 @@ main {
   position: fixed; inset: 0; z-index: 600;
   background: rgba(0,0,0,.75);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   opacity: 0; pointer-events: none;
@@ -1253,6 +1275,7 @@ footer a { color: var(--neon); text-decoration: none; }
   position: fixed; inset: 0;
   background: rgba(10,10,15,0.95);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 9999;
   display: flex; align-items: center; justify-content: center;
   opacity: 0; pointer-events: none; transition: opacity .3s ease;
@@ -1426,7 +1449,7 @@ footer a { color: var(--neon); text-decoration: none; }
 html, body, #root {
   width: 100% !important;
   max-width: 100% !important;
-  overflow-x: clip !important;
+  overflow-x: hidden !important;
   overscroll-behavior-x: none !important;
   touch-action: pan-y !important;
   position: relative;

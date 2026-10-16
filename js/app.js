@@ -27,15 +27,30 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Register Service Worker (with cache-bust & auto-update) ──
+// Uses relative paths and explicit scope for GitHub Pages compatibility.
+// Firefox requires explicit { scope: './' } to avoid 404 issues on subdirectories.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js?v=20261015')
+    navigator.serviceWorker.register('./sw.js?v=20261016', { scope: './' })
       .then(reg => {
         console.info('[SW] Registered:', reg.scope);
         reg.update();
       })
       .catch(err => console.warn('[SW] Registration failed:', err));
   });
+}
+
+// ── Cross-browser standalone (installed PWA) detection ─────────
+// Chrome/Edge: matchMedia, Firefox: matchMedia, Safari/iOS: navigator.standalone
+const isStandalone = () =>
+  window.matchMedia('(display-mode: standalone)').matches ||
+  window.matchMedia('(display-mode: fullscreen)').matches ||
+  window.navigator.standalone === true;
+
+// Log PWA mode for debugging
+if (isStandalone()) {
+  console.info('[PWA] Running in standalone (installed) mode');
+  document.documentElement.classList.add('pwa-standalone');
 }
 
 // ── Bootstrap & Auth Flow ─────────────────────────────────────
