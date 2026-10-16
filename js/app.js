@@ -31,7 +31,7 @@ document.addEventListener('keydown', e => {
 // Firefox requires explicit { scope: './' } to avoid 404 issues on subdirectories.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js?v=20261016', { scope: './' })
+    navigator.serviceWorker.register('./sw.js?v=20261016-2', { scope: './' })
       .then(reg => {
         console.info('[SW] Registered:', reg.scope);
         reg.update();

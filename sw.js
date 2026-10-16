@@ -7,7 +7,7 @@
  * Compatible with Chrome, Firefox (Desktop & Android), Safari.
  */
 
-const CACHE_NAME = 'gym-tracker-v20261016-firefox';
+const CACHE_NAME = 'gym-tracker-v20261016-pwa-firefox-2';
 
 const APP_SHELL = [
   './',
@@ -28,19 +28,29 @@ const APP_SHELL = [
   './icons/icon-maskable-192.png',
   './icons/icon-maskable-512.png',
   './icons/apple-touch-icon.png',
-  './icons/icon-192.svg',
-  './icons/icon-512.svg',
-  './icons/icon-maskable-192.svg',
-  './icons/icon-maskable-512.svg',
   './manifest.json',
 ];
 
-// ── Install: immediately activate without waiting ────────────
+// ── Install: precache APP_SHELL with Promise.allSettled so a single failure never breaks SW install ──
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then(async cache => {
+      await Promise.allSettled(
+        APP_SHELL.map(async url => {
+          try {
+            const response = await fetch(url, { cache: 'reload' });
+            if (response && response.status === 200) {
+              await cache.put(url, response);
+            } else {
+              console.warn('[SW] Non-200 status when precaching:', url, response ? response.status : 'null');
+            }
+          } catch (err) {
+            console.warn('[SW] Failed to precache asset:', url, err);
+          }
+        })
+      );
+    })
   );
 });
 
